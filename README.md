@@ -28,9 +28,10 @@ How to [ Use Custom Azure ML in Demand Planning](https://learn.microsoft.com/en-
 
 1. Set up a third party App and Assign access to workspace and storage account
    > this steps are starting from [Azure Portal](https://ms.portal.azure.com/#home)
-3. Connect to Azure ML Service from Demand Planning
+2. Connect to Azure ML Service from Demand Planning
    > the second video shows in detail where to find the information you need to connect demand planning with AzureML, use the documentation below as well
-5. Set up a forecast using your Custom ML
+3. Set up a forecast using your Custom ML
+   > Operations > Forecast profiles > add Custom Azure Machine Learning step > three dots -> settings > Custom action configuration > Azure ML Endpoints > select your endpoint
 
 
 
