@@ -3,28 +3,25 @@
 ## Introduction 
 This project aims to serve as a bridge between Custom ML models developed in Azure ML and the Dynamics 365 Demand Planning application. It is supposed to guide you thought the process of creating your own Custom forecasting model in Azure ML and how to connect demand planning with it. The Documentation consists of this ReadMe file, a scoring script, a Docker file and demonstrative videos. Use the files to easily set up your own Custom ML.
 ## End-to-end
-### Set up
-1. Go to https://ms.portal.azure.com/#home > Azure Machine Learning > Launch studio
-2. Create  Workspace
-3. In that Workspace set up  Compute Clustor
-   > Compute > Compute Cluster > +New
+### Prerequisites
+1. Sign in to the [AzureML](https://ml.azure.com/). If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/en-us/free/) before you begin.
+2. To use Azure Machine Learning, you'll first need a workspace and Compute Cluster. If you don't have one, complete [Create resources you need to get started](https://learn.microsoft.com/en-us/azure/machine-learning/quickstart-create-resources?view=azureml-api-2) to create a workspace and Compute Cluster.
+3. You need a storage account for your workspace. If you don't have a storage account complete [Create a storage account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 
-For more information go to https://learn.microsoft.com/en-us/azure/machine-learning/quickstart-create-resources?view=azureml-api-2
 ### Gettign started 
 1. Create an envrionmemnt using the files attached
-   > Environment > Custom Envionments > +Create
+   > Environment > Custom Envionments > +Create -> Select form environment source -> Create a new docker context -> use zip file for the docker file and yaml file
 2. Create the Scoring Script using the file attached
 3. Register a model
-   > Models > +Register
+   > Models > +Register -> from local files -> upload scoring script 
 4. Create an Endpoint
-   > Endpoints > Batch Endpoints > +Create
+   > Endpoints > Batch Endpoints > +Create -> Name it -> select your model -> select deployment name -> upload scoring script -> select environment -> select compute cluster
 5. Add new Deployment
-   > your endpoint > +Add deployment
+   > your endpoint > +Add deployment -> same steps as in '4. Create endpoint' (Take care to update the default deployment)
 
-For more information go to https://learn.microsoft.com/en-us/azure/machine-learning/tutorial-azure-ml-in-a-day?view=azureml-api-2
+For more information go to [Get started woth Azure ML](https://learn.microsoft.com/en-us/azure/machine-learning/tutorial-azure-ml-in-a-day?view=azureml-api-2)
 ### Connect demand planning with you Custom Model 
-Go to  https://learn.microsoft.com/en-gb/dynamics365/supply-chain/demand-planning/custom-azure-machine-learning-algorithms
-
+Follow and complete the steps in [ Use Custom Azure ML in Demand Planning](https://learn.microsoft.com/en-us/dynamics365/supply-chain/demand-planning/custom-azure-machine-learning-algorithms)
 1. Set up a third party App
 2. Assign access to workspace and storage account
 3. Connect to Azure ML Service from Demand Planning
