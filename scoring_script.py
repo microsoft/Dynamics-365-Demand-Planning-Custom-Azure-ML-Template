@@ -46,9 +46,6 @@ def init():
     print(f"This will show up in files under logs/user on the Azure portal2.")
 
 def forecastForeSingleTimeseries(timeseries_df, params, measure_column, time_column):
-
-    #print(timeseriesinfo)
-
     dimensions_columns = [col for col in timeseries_df if col not in [time_column, measure_column]]
 
     first_row = timeseries_df.iloc[0]
@@ -65,7 +62,6 @@ def forecastForeSingleTimeseries(timeseries_df, params, measure_column, time_col
 
     # Now you can drop the original time column as it's been replaced by more specific features
     data.drop(time_column, axis=1, inplace=True)
-
 
     # List of columns to drop
     columns_to_drop = [measure_column]
