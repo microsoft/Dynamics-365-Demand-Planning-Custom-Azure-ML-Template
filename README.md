@@ -10,16 +10,16 @@ This project aims to serve as a bridge between Custom ML models developed in Azu
 
 ### Gettign started 
 1. Create a Compute Cluster
-   > Compute > Compute Cluster > + New -> Select Virtual machine
+   > Compute > Compute Cluster > + New > Select Virtual machine
 3. Create an envrionmemnt using the files attached
-   > Environment > Custom Envionments > +Create -> Select form environment source -> Create a new docker context -> use zip file for the docker file and yaml file
+   > Environment > Custom Envionments > +Create > Select form environment source > Create a new docker context > use zip file for the docker file and yaml file
 4. Create the Scoring Script using the file attached
 5. Register a model
-   > Models > +Register -> from local files -> upload scoring script 
+   > Models > +Register > from local files > upload scoring script 
 6. Create an Endpoint
-   > Endpoints > Batch Endpoints > +Create -> Name it -> select your model -> select deployment name -> upload scoring script -> select environment -> select compute cluster
+   > Endpoints > Batch Endpoints > +Create > Name it > select your model > select deployment name > upload scoring script > select environment > select compute cluster
 6. Add new Deployment
-   > your endpoint > +Add deployment -> same steps as in '4. Create endpoint' (Take care to update the default deployment)
+   > your endpoint > +Add deployment > same steps as in '4. Create endpoint' (Take care to update the default deployment)
 
 For more information go to [Get started woth Azure ML](https://learn.microsoft.com/en-us/azure/machine-learning/tutorial-azure-ml-in-a-day?view=azureml-api-2) and watch the first video for demonstration
 ### Connect demand planning with you Custom Model 
