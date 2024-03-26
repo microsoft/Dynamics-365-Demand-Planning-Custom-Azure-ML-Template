@@ -8,10 +8,10 @@ This project aims to serve as a bridge between Custom ML models developed in Azu
 2. Select your workspace, if it is not already open. If you don't have one, complete [Create resources you need to get started](https://learn.microsoft.com/en-us/azure/machine-learning/quickstart-create-resources?view=azureml-api-2) to create a workspace and learn about it.
 3. You need a storage account for your workspace. If you don't have a storage account complete [Create a storage account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 
-### Gettign started 
+### Getting started 
 1. Create a Compute Cluster
    > Compute > Compute Cluster > + New > Select Virtual machine
-3. Create an envrionmemnt using the files attached
+3. Create an envrionment using the files attached
    > Environment > Custom Envionments > +Create > Select form environment source > Create a new docker context > use zip file for the docker file and yaml file
 4. Create the Scoring Script using the file attached
 5. Register a model
