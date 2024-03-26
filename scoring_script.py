@@ -7,19 +7,11 @@ import pandas as pd
 import numpy as np 
 from typing import List, Union, Any
 
-import sys
-sys.path.append('/anaconda/envs/azureml_py38/lib/python3.8/site-packages')
+
 from xgboost import XGBRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-from setuptools import setup
 from azureml.telemetry import INSTRUMENTATION_KEY 
 from azureml.core import Run
-from azureml.core import Experiment
-from azureml.core import Workspace
- 
 from azureml.automl.core.shared import log_server 
-from azureml.train.estimator import Estimator
 
 DateGranularity = 'DateGranularity'
 StartDate = 'PeriodStartDate'
@@ -45,11 +37,15 @@ def init():
     
     print(f"This will show up in files under logs/user on the Azure portal2.")
 
-def forecastForeSingleTimeseries(timeseries_df, params, measure_column, time_column):
-    dimensions_columns = [col for col in timeseries_df if col not in [time_column, measure_column]]
+def forecastSingleTimeseries(timeseries_df, params, measure_column, time_column):
 
+    # Read the dimension columns of the timeseries
+    dimensions_columns = [col for col in timeseries_df if col not in [time_column, measure_column]]
+    
+    # Read the dimension column values of the timeseries
     first_row = timeseries_df.iloc[0]
 
+    # Create data frame of the timeseries data including measure and time
     data = timeseries_df[[measure_column,time_column]]
 
     # Convert TimeColumn to datetime
@@ -60,34 +56,25 @@ def forecastForeSingleTimeseries(timeseries_df, params, measure_column, time_col
     data['Month'] = data[time_column].dt.month
     data['Day'] = data[time_column].dt.day
 
-    # Now you can drop the original time column as it's been replaced by more specific features
+    # Drop the original time column as it's been replaced by more specific features
     data.drop(time_column, axis=1, inplace=True)
 
-    # List of columns to drop
-    columns_to_drop = [measure_column]
-
-    # Drop only if the column exists in the DataFrame
-    columns_to_drop = [col for col in columns_to_drop if col in data.columns]
-
-    # Now drop the columns      _Value
-    X = data.drop(columns_to_drop, axis=1)
+    # Drop the measure column from X and assign it to y
+    X = data.drop([measure_column], axis=1)
     y = data[measure_column]
 
-    # Ensure that the target variable '_Value' is converted to numeric
+    # Ensure that the measure column is converted to numeric
     y = pd.to_numeric(y, errors='coerce')
 
-    # Drop any rows with NaN in the target variable      _Value
+    # Drop any rows with NaN in the measure column
     data.dropna(subset=[measure_column], inplace=True)
-
-    # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Train the model
     model = XGBRegressor()
-    model.fit(X_train, y_train)
+    model.fit(X, y)
 
     # Generate future dates for prediction
-    future_dates = pd.date_range(start=params[EndDate] + pd.Timedelta(days=1), periods=params[TimeWindow], freq=params[DateGranularity])
+    future_dates = pd.date_range(start=params[StartDate] + pd.Timedelta(days=1), periods=params[TimeWindow], freq=params[DateGranularity])
 
     # Create a dataframe for future predictions
     future_data = pd.DataFrame({time_column: future_dates})
@@ -96,7 +83,7 @@ def forecastForeSingleTimeseries(timeseries_df, params, measure_column, time_col
     future_data['Day'] = future_data[time_column].dt.day
 
     # Ensure the column order in future_data matches the training data
-    future_data = future_data.reindex(columns=X_train.columns, fill_value=0)
+    future_data = future_data.reindex(columns=X.columns, fill_value=0)
 
     # Predict future values
     future_predictions = model.predict(future_data)
@@ -104,10 +91,10 @@ def forecastForeSingleTimeseries(timeseries_df, params, measure_column, time_col
     # Prepare the forecast dataframe
     forecast = pd.DataFrame({time_column: future_dates, measure_column: future_predictions})
 
+    # Set values of the dimension columns for the timeseries
     for col in dimensions_columns:
         forecast[col] = first_row[col]
 
-    #return ({timeseries_uniqid: forecast})
     return forecast
 
 def executeForecast(file_path):
@@ -129,26 +116,19 @@ def executeForecast(file_path):
     time_column = params[TimeColumn]
     measure_column = params[MeasureColumn]
 
-    # Read and print raw dimensions data for debugging
+    # Read data and remove the empty columns
     data = pd.read_csv(file_path, skiprows=lambda x: x in [0, 1, 2] or pd.isna(x), header=0)
-
-    headers = data.columns.tolist()
-
     non_empty_columns = [col for col in data.columns if data[col].notna().any()]
     data = data[non_empty_columns]
 
+    # Create unique id for timeseries and group them
     unique_id_columns = data.columns.difference([measure_column, time_column]).tolist()
-    print(unique_id_columns)
-
-    #data['uniqid'] = data[unique_id_columns].apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
-    #print(data['uniqid'])
-
-    forecast = data.groupby(unique_id_columns).apply(lambda t: forecastForeSingleTimeseries(t, params, measure_column, time_column))
+    forecast = data.groupby(unique_id_columns).apply(lambda t: forecastSingleTimeseries(t, params, measure_column, time_column))
     
-    # set back index from tuple to int
+    # Set back index from tuple to int
     forecast.reset_index(drop=True, inplace=True)
 
-    # Add the headers as the first row
+    # Add the column headers as the first row
     headers = forecast.columns.tolist()
     forecast.loc[-1] = headers
     forecast.index = forecast.index + 1
@@ -160,5 +140,5 @@ def run(mini_batch: List[str]) -> Union[List[Any], pd.DataFrame]:
     
     for file_path in mini_batch: 
         forecast = executeForecast(file_path)
-     
-    return pd.DataFrame(forecast)
+
+        return pd.DataFrame(forecast)
