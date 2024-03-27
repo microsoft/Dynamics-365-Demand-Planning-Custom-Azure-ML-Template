@@ -30,6 +30,7 @@ How to [ Use Custom Azure ML in Demand Planning](https://learn.microsoft.com/en-
    > this steps are starting from [Azure Portal](https://ms.portal.azure.com/#home)
 2. Connect to Azure ML Service from Demand Planning
    > the second video shows in detail where to find the information you need to connect demand planning with AzureML, use the documentation below as well
+   
    > Subscription ID - got to workspace, select your storage account, there you find the subscription ID
    > Resource Group Name - go to workspace, there you find your Resource Group
    > Workspace Name - enter your workspace name
