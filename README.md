@@ -30,6 +30,12 @@ How to [ Use Custom Azure ML in Demand Planning](https://learn.microsoft.com/en-
    > this steps are starting from [Azure Portal](https://ms.portal.azure.com/#home)
 2. Connect to Azure ML Service from Demand Planning
    > the second video shows in detail where to find the information you need to connect demand planning with AzureML, use the documentation below as well
+   > Subscription ID - got to workspace, select your storage account, there you find the subscription ID
+   > Resource Group Name - go to workspace, there you find your Resource Group
+   > Workspace Name - enter your workspace name
+   > Storage Account Name - go to workspace there you find your workspace's storage account
+   > Application ID - go to your third party app, there you find the application ID
+   > Application Secret - go to you third party app, go to Certificates & Secrets, create a new client secret (it gets deleted once you leave the page) -> you need the 'Value' not the Secret ID!
 3. Set up a forecast using your Custom ML
    > Operations > Forecast profiles > add Custom step > three dots > settings > Custom action configuration > select you Custom ML Model >  Azure ML Endpoints > select your batch endpoint
 
