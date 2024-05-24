@@ -1,7 +1,14 @@
 # Custom-ML-in-DemandPlanning
 
 ## Introduction 
-This project aims to serve as a bridge between Custom ML models developed in Azure ML and the Dynamics 365 Demand Planning application. It is supposed to guide you thought the process of creating your own Custom forecasting model in Azure ML and how to connect demand planning with it. The Documentation consists of this ReadMe file, a scoring script, a Docker file and demonstrative videos. Use the files to easily set up your own Custom ML.
+This code repository serves primarily as an illustrative example demonstrating key aspects of interfacing with the Dynamics 365 Demand Planning application through Azure Machine Learning (Azure ML). It provides insights into how to read input data, handle standard and custom parameters, and generate output that aligns with the application's consumption requirements.
+
+The repository consists of this ReadMe file, a scoring script, a Docker file and demonstrative videos.
+
+## Usage Recommendations
+While the provided code offers valuable insights into the integration process, it is essential to understand that it is not intended for direct deployment in production environments. Instead, it should be treated as a reference or starting point for developers looking to implement similar solutions.
+Given the complexity and specific requirements of production environments, including considerations such as scalability, security, and performance optimization, it is recommended to further customize and validate the codebase according to the unique needs of the target deployment scenario.
+
 ## End-to-end
 ### Prerequisites
 1. Sign in to the [AzureML](https://ml.azure.com/). If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/en-us/free/) before you begin.
